@@ -12,6 +12,7 @@ package lab1;
 public class PalindromoAir {
     public final int capacidad = 30;
     public final double precioInicial = 100;
+    public final double descuento = 0.20;
     
     Ticket[] asientos;
     
@@ -119,4 +120,74 @@ public class PalindromoAir {
         return letraFila + "" + columna;
     }
 
+    private boolean tieneLetras(String name, int index) {
+      if (index >= name.length()) {
+          return false;
+      }
+
+      if (Character.isLetter(name.charAt(index))) {
+          return true;
+      }
+
+      return tieneLetras(name, index + 1);
+  }
+    
+  public boolean sellTicket(String name) {
+    if (name == null || !tieneLetras(name, 0)) {
+        System.out.println("Ingrese un nombre valido.");
+        return false;
+    }
+
+    int posicion = firstAvailable(0);
+
+    if (posicion == -1) {
+        System.out.println("Avion lleno. No se puede vender el boleto.");
+        return false;
+    }
+
+    if (searchPassenger(name, 0) != -1) {
+        System.out.println("El pasajero ya tiene un asiento asignado.");
+        return false;
+    }
+
+    boolean palindromo = isPalindromo(name);
+    double precioFinal = precioInicial;
+
+    if (palindromo) {
+        precioFinal = precioInicial * (1 - descuento);
+    }
+
+    asientos[posicion] = new Ticket(name, precioInicial, precioFinal, palindromo);
+
+    char fila = (char) ('A' + posicion / 6);
+    int columna = posicion % 6 + 1;
+    String codigo = "" + fila + columna;
+
+    System.out.println("Vendido: " + name + " en " + codigo + ", pago $" + precioFinal);
+
+    return true;
+}
+  
+  public boolean cancelTicket(String name) {
+    if (name == null || !tieneLetras(name, 0)) {
+        System.out.println("Ingrese un nombre valido.");
+        return false;
+    }
+
+    int posicion = searchPassenger(name, 0);
+
+    if (posicion == -1) {
+        System.out.println("No se encontro al pasajero. No se pudo cancelar.");
+        return false;
+    }
+
+    String nombre = asientos[posicion].nombre;
+    double reembolso = asientos[posicion].precioTot;
+
+    asientos[posicion] = null;
+
+    System.out.println("Cancelado: " + nombre + ". Reembolso de $" + reembolso);
+
+    return true;
+}
 }
