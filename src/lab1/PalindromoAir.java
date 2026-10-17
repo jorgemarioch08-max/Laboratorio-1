@@ -111,5 +111,12 @@ public class PalindromoAir {
 
         return comparar(name, inicio + 1, fin - 1, true);
     }
+    
+    public String obtenerCodigoAsiento(int index) {
+        int fila = index / 6;
+        int columna = (index % 6) + 1;
+        char letraFila = (char) ('A' + fila);
+        return letraFila + "" + columna;
+    }
 
 }
