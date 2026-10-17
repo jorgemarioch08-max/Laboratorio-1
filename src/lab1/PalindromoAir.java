@@ -114,25 +114,24 @@ public class PalindromoAir {
     }
     
 
-    public void printPassengers(int index, boolean isEmpty) {
+   public String printPassengers(int index, boolean isEmpty) {
         if (index >= capacidad) {
-            if (isEmpty) {
-                System.out.println("No hay pasajeros registrados");
-            }
-            return;
+            return "";
         }
 
+        String textoAcumulado = "";
+        
         if (asientos[index] != null) {
-            isEmpty = false;
-
-            System.out.println("Asiento: " + (index + 1));
-            System.out.println("Nombre: " + asientos[index].getNombre());
-            System.out.println("Monto original: $" + asientos[index].getPrecioOg());
-            System.out.println("Monto pagado: $" + asientos[index].getPrecioTot());
-            System.out.println("¿Es palíndromo?: " + asientos[index].isPalindromo());
+            String codigo = obtenerCodigoAsiento(index);
+            Ticket t = asientos[index];
+            
+            textoAcumulado = "Asiento: " + codigo + 
+                             " | Nombre: " + t.getNombre() + 
+                             " | Pagado: $" + t.getPrecioTot() + 
+                             (t.isPalindromo() ? " (Palíndromo)" : "") + "\n";
         }
 
-        printPassengers(index + 1, isEmpty);
+        return textoAcumulado + printPassengers(index + 1, false);
     }
     
     public double income(int index, double income) {
@@ -225,6 +224,16 @@ public class PalindromoAir {
     return true;
 }
 
+  public void reset(int index) {
+    if (index >= capacidad) {
+        return;
+    }
+
+    asientos[index] = null;
+
+    reset(index + 1);
+}
+  
   public double dispatch() {
       
         double totalIngresos = income(0,0);
