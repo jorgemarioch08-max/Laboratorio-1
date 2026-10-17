@@ -1,13 +1,18 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package lab1;
 
-/**
- *
- * @author claud
- */
+
 public class Ticket {
+    String nombre;
+    double precioOg;
+    double precioTot;
+    boolean palindromo;
+
+    public Ticket(String nombre, double precioOg, double precioTot, boolean palindromo) {
+        this.nombre = nombre;
+        this.precioOg = precioOg;
+        this.precioTot = precioTot;
+        this.palindromo = palindromo;
+    }
     
 }
