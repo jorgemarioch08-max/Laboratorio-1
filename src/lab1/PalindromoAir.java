@@ -22,29 +22,29 @@ public class PalindromoAir {
     }
     
     public String limpiarTexto(String texto) {
-    if (texto == null) return "";
-    
-    String limpio = texto.toLowerCase();
-    
-    limpio = limpio.replace("á", "a")
-                   .replace("é", "e")
-                   .replace("í", "i")
-                   .replace("ó", "o")
-                   .replace("ú", "u")
-                   .replace("ü", "u")
-                   .replace("ñ", "n");
-    
-    String resultado = "";
-    for (int i = 0; i < limpio.length(); i++) {
-        char c = limpio.charAt(i);
-        
-        
-        if ((c >= 'a' && c <= 'z') || (c >= '0' && c <= '9')) {
-            resultado = resultado + c;
+        if (texto == null) return "";
+
+        String limpio = texto.toLowerCase();
+
+        limpio = limpio.replace("á", "a")
+                       .replace("é", "e")
+                       .replace("í", "i")
+                       .replace("ó", "o")
+                       .replace("ú", "u")
+                       .replace("ü", "u")
+                       .replace("ñ", "n");
+
+        String resultado = "";
+        for (int i = 0; i < limpio.length(); i++) {
+            char c = limpio.charAt(i);
+
+
+            if ((c >= 'a' && c <= 'z') || (c >= '0' && c <= '9')) {
+                resultado = resultado + c;
+                }
             }
-        }
-    
-    return resultado;
+
+        return resultado;
     }
     
     public int firstAvailable(int index){
@@ -74,20 +74,20 @@ public class PalindromoAir {
     }
     
     public boolean isPalindromo(String name) {
-    if (name == null) {
-        return false;
+        if (name == null) {
+            return false;
+        }
+
+        name = name.toLowerCase();
+        name = name.replace('á', 'a');
+        name = name.replace('é', 'e');
+        name = name.replace('í', 'i');
+        name = name.replace('ó', 'o');
+        name = name.replace('ú', 'u');
+        name = name.replace('ü', 'u');
+
+        return comparar(name, 0, name.length() - 1, false);
     }
-
-    name = name.toLowerCase();
-    name = name.replace('á', 'a');
-    name = name.replace('é', 'e');
-    name = name.replace('í', 'i');
-    name = name.replace('ó', 'o');
-    name = name.replace('ú', 'u');
-    name = name.replace('ü', 'u');
-
-    return comparar(name, 0, name.length() - 1, false);
-}
   
     //esto es  siempre de isPalindromo, solamente para eso se usa
     private boolean comparar(String name, int inicio, int fin, boolean encontroLetra) {
@@ -113,6 +113,40 @@ public class PalindromoAir {
         return comparar(name, inicio + 1, fin - 1, true);
     }
     
+
+    public void printPassengers(int index, boolean isEmpty) {
+        if (index >= capacidad) {
+            if (isEmpty) {
+                System.out.println("No hay pasajeros registrados");
+            }
+            return;
+        }
+
+        if (asientos[index] != null) {
+            isEmpty = false;
+
+            System.out.println("Asiento: " + (index + 1));
+            System.out.println("Nombre: " + asientos[index].getNombre());
+            System.out.println("Monto original: $" + asientos[index].getPrecioOg());
+            System.out.println("Monto pagado: $" + asientos[index].getPrecioTot());
+            System.out.println("¿Es palíndromo?: " + asientos[index].isPalindromo());
+        }
+
+        printPassengers(index + 1, isEmpty);
+    }
+    
+    public double income(int index, double income) {
+        if (index >= capacidad) {
+            return income;
+        }
+
+        if (asientos[index] != null) {
+            income += asientos[index].getPrecioTot();
+        }
+
+        return income(index + 1, income);
+    }
+
     public String obtenerCodigoAsiento(int index) {
         int fila = index / 6;
         int columna = (index % 6) + 1;
@@ -190,6 +224,7 @@ public class PalindromoAir {
 
     return true;
 }
+
   public double dispatch() {
         double totalIngresos = income(0);
        
@@ -198,4 +233,5 @@ public class PalindromoAir {
         return totalIngresos;
   }
   
+
 }
