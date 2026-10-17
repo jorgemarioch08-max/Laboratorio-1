@@ -71,4 +71,45 @@ public class PalindromoAir {
         }
         return searchPassenger(name, index + 1);
     }
+    
+    public boolean isPalindromo(String name) {
+    if (name == null) {
+        return false;
+    }
+
+    name = name.toLowerCase();
+    name = name.replace('á', 'a');
+    name = name.replace('é', 'e');
+    name = name.replace('í', 'i');
+    name = name.replace('ó', 'o');
+    name = name.replace('ú', 'u');
+    name = name.replace('ü', 'u');
+
+    return comparar(name, 0, name.length() - 1, false);
+}
+  
+    //esto es  siempre de isPalindromo, solamente para eso se usa
+    private boolean comparar(String name, int inicio, int fin, boolean encontroLetra) {
+        if (inicio > fin) {
+            return encontroLetra;
+        }
+
+        char primera = name.charAt(inicio);
+        char ultima = name.charAt(fin);
+
+        if (!((primera >= 'a' && primera <= 'z') || primera == 'ñ')) {
+            return comparar(name, inicio + 1, fin, encontroLetra);
+        }
+
+        if (!((ultima >= 'a' && ultima <= 'z') || ultima == 'ñ')) {
+            return comparar(name, inicio, fin - 1, encontroLetra);
+        }
+
+        if (primera != ultima) {
+            return false;
+        }
+
+        return comparar(name, inicio + 1, fin - 1, true);
+    }
+
 }
