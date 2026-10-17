@@ -10,5 +10,14 @@ package lab1;
  * @author gigiw
  */
 public class PalindromoAir {
+    public final int capacidad = 30;
+    public final double precioInicial = 100;
+    
+    Ticket[] asientos;
+    
+    public PalindromoAir(){
+        asientos = new Ticket[capacidad];
+    }
+    
     
 }
