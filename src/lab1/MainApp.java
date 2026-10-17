@@ -61,7 +61,7 @@ public class MainApp extends JFrame implements ActionListener {
                     if (t == null) {
                         JOptionPane.showMessageDialog(null, "El asiento " + cod + " está libre.");
                     } else {
-                        JOptionPane.showMessageDialog(null, "Asiento: " + cod + "\nPasajero: " + t.nombre + "\nPagó: $" + t.precioPagado);
+                        JOptionPane.showMessageDialog(null, "Asiento: " + cod + "\nPasajero: " + t.nombre + "\nPagó: $" + t.precioTot);
                     }
                 }
             });

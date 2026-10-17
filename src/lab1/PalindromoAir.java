@@ -226,7 +226,8 @@ public class PalindromoAir {
 }
 
   public double dispatch() {
-        double totalIngresos = income(0);
+      
+        double totalIngresos = income(0,0);
        
         reset(0);
         
