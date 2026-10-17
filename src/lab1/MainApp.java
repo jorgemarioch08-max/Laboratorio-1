@@ -123,62 +123,34 @@ public class MainApp extends JFrame implements ActionListener {
         if (botonPresionado == btnVender) {
             String nombre = campoNombre.getText();
             
-            if (nombre.trim().equals("")) {
-                JOptionPane.showMessageDialog(null, "Error: Ingrese un nombre válido.");
-                return;
-            }
-
+           
             int asientoLibre = avion.firstAvailable(0);
-            if (asientoLibre == -1) {
-                consola.append("Avión lleno. No se puede vender.\n");
-                return;
-            }
-
-            int repetido = avion.searchPassenger(nombre, 0);
-            if (repetido != -1) {
-                consola.append("Error: El pasajero ya tiene un asiento asignado.\n");
-                return;
-            }
-
-            boolean esPali = avion.isPalindromo(nombre);
-            double precioFinal = avion.precioInicial;
-            if (esPali == true) {
-                precioFinal = avion.precioInicial * 0.8; // 20% de descuento
-            }
-
-            Ticket nuevoTicket = new Ticket(nombre, avion.precioInicial, precioFinal, esPali);
-            avion.asientos[asientoLibre] = nuevoTicket;
-
-            String codigoAsiento = avion.obtenerCodigoAsiento(asientoLibre);
-            arregloBotones[asientoLibre].setText(codigoAsiento + "\n" + nombre);
             
-            if (esPali == true) {
-                arregloBotones[asientoLibre].setBackground(Color.ORANGE); // es un palindromo 
-            } else {
-                arregloBotones[asientoLibre].setBackground(Color.RED); // ocupado
-            }
+            boolean resultadoVenta = avion.sellTicket(nombre);
 
-            consola.append("Vendido: " + nombre + " en " + codigoAsiento + ", pagó $" + precioFinal + "\n");
-            campoNombre.setText("");
-        }
-
-        // cancelar
-        if (botonPresionado == btnCancelar) {
-            String nombre = campoNombre.getText();
-            int indice = avion.searchPassenger(nombre, 0);
-
-            if (indice == -1) {
-                consola.append("No se encontró al pasajero para cancelar.\n");
-            } else {
-                String codigo = avion.obtenerCodigoAsiento(indice);
-                double dineroDevuelto = avion.asientos[indice].precioPagado;
+            if (resultadoVenta && asientoLibre != -1) {
+                String codigoAsiento = avion.obtenerCodigoAsiento(asientoLibre);
+                Ticket t = avion.asientos[asientoLibre];
                 
-                avion.asientos[indice] = null; // Liberar asiento
                 
-                arregloBotones[indice].setText(codigo);
-                arregloBotones[indice].setBackground(Color.GREEN); // Regresa a verde
+                arregloBotones[asientoLibre].setText(codigoAsiento + "\n" + t.nombre);
+                
+                if (t.palindromo) {
+                    arregloBotones[asientoLibre].setBackground(Color.ORANGE); // Color palíndromo
+                } else {
+                    arregloBotones[asientoLibre].setBackground(Color.RED); // Ocupado normal
+                }
 
-                consola.append("Cancelado: Asiento " + codigo + ". Reembolso de $" + dineroDevuelto + "\n");
+                consola.append("Vendido: " + t.nombre + " en " + codigoAsiento + ", pagó $" + t.precioTot + "\n");
+            } else {
+                // Mensajes de error si falló la validación o el avión está lleno
+                if (avion.firstAvailable(0) == -1) {
+                    consola.append("Avión lleno. No se puede vender el boleto.\n");
+                } else if (avion.searchPassenger(nombre, 0) != -1) {
+                    consola.append("El pasajero ya tiene un asiento asignado.\n");
+                } else {
+                    consola.append("Ingrese un nombre válido.\n");
+                }
             }
             campoNombre.setText("");
         }
@@ -194,11 +166,13 @@ public class MainApp extends JFrame implements ActionListener {
                 String codigo = avion.obtenerCodigoAsiento(indice);
                 consola.append(nombre + " está en el asiento " + codigo + ".\n");
             }
+            campoNombre.setText("");
+        
         }
 
         // imprimir la informacion
         if (botonPresionado == btnImprimir) {
-            String resultado = avion.printPassengers(0);
+            String resultado = avion.printPassengers(0, true);
             if (resultado.equals("")) {
                 consola.append("Sin pasajeros registrados.\n");
             } else {
@@ -208,7 +182,7 @@ public class MainApp extends JFrame implements ActionListener {
 
         // ingresos
         if (botonPresionado == btnIngresos) {
-            double total = avion.income(0);
+            double total = avion.income(0,0);
             consola.append("Ingresos actuales: $" + total + "\n");
         }
 
@@ -216,7 +190,7 @@ public class MainApp extends JFrame implements ActionListener {
         if (botonPresionado == btnDespachar) {
             int respuesta = JOptionPane.showConfirmDialog(null, "¿Desea despachar el vuelo?", "Confirmar", JOptionPane.YES_NO_OPTION);
             if (respuesta == JOptionPane.YES_OPTION) {
-                double total = avion.income(0);
+                double total = avion.income(0,0);
                 avion.reset(0);
 
                 

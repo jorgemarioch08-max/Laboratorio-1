@@ -190,4 +190,12 @@ public class PalindromoAir {
 
     return true;
 }
+  public double dispatch() {
+        double totalIngresos = income(0);
+       
+        reset(0);
+        
+        return totalIngresos;
+  }
+  
 }

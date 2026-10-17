@@ -14,5 +14,23 @@ public class Ticket {
         this.precioTot = precioTot;
         this.palindromo = palindromo;
     }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public double getPrecioOg() {
+        return precioOg;
+    }
+
+    public double getPrecioTot() {
+        return precioTot;
+    }
+
+    public boolean isPalindromo() {
+        return palindromo;
+    }
+    
+    
     
 }
